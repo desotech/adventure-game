@@ -1,8 +1,6 @@
 import time
 import random
 
-weapon = []
-
 
 def print_pause(line):
     print(line)
@@ -54,7 +52,7 @@ def victory(enemy):
     print_pause(f"You have rid the town of the {enemy}. You are victorious!")
 
 
-def house_dilema(enemy):
+def house_dilema(enemy, weapon):
     house_response = input("Would you like to(1) fight or (2) run away?\n")
     if house_response == "1" and "Sword of Ogoroth" not in weapon:
         lose(enemy)
@@ -63,13 +61,13 @@ def house_dilema(enemy):
     elif house_response == "2":
         print_pause("You run back into the field."
                     " Luckily, you don't seem to have been followed.\n")
-        story(enemy)
+        story(enemy, weapon)
     else:
         print_pause("Please eneter 1 or 2.")
-        house_dilema(enemy)
+        house_dilema(enemy, weapon)
 
 
-def play_again():
+def play_again(weapon):
     again = input("Would you like to play again? (y/n)\n").lower()
     if "n" in again:
         print_pause("Thanks for playing! See you next time.")
@@ -78,38 +76,39 @@ def play_again():
         game()
     else:
         print_pause("Please eneter y or n.")
-        play_again()
+        play_again(weapon)
 
 
-def story(enemy):
+def story(enemy, weapon):
     response = input("Enter 1 to knock on the door of the house.\n"
                      "Enter 2 to peer into the cave.\n")
     if response == "1" and "Sword of Ogoroth" not in weapon:
         house(enemy)
         print_pause("You feel a bit under-prepared for this,"
                     " what with only having a tiny dagger.")
-        house_dilema(enemy)
+        house_dilema(enemy, weapon)
     elif response == "1" and "Sword of Ogoroth" in weapon:
         house(enemy)
-        house_dilema(enemy)
+        house_dilema(enemy, weapon)
     elif response == "2" and "Sword of Ogoroth" not in weapon:
         cave()
         weapon.append("Sword of Ogoroth")
-        story(enemy)
+        story(enemy, weapon)
     elif response == "2" and "Sword of Ogoroth" in weapon:
         print_pause("You've been here before, and gotten all the "
                     "good stuff. It's just an empty cave now.\n")
-        story(enemy)
+        story(enemy, weapon)
     else:
         print_pause("Please eneter 1 or 2.")
-        story(enemy)
+        story(enemy, weapon)
 
 
 def game():
+    weapon = []
     enemy = random.choice(["pirate", "dragon", "knight", "gorgon"])
     intro(enemy)
-    story(enemy)
-    play_again()
+    story(enemy, weapon)
+    play_again(weapon)
 
 
 game()
